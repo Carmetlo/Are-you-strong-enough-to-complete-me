@@ -31,7 +31,7 @@ main {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-#question-box {
+#question-container {
     margin-top: 20px;
 }
 

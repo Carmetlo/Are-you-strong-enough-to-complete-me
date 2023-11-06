@@ -10,22 +10,30 @@
     <header>
         <h1>Did you study enough to complete me?</h1>
         <section id="timer">Time: <span id="time-remaining">60</span> seconds</section>
+        <button id="start-button">Start Quiz</button>
     </header>
+
     <main>
-        <section id="question-box">
-            <h2 id="question">Question 1: What is JavaScript?</h2>
-            <ul id="choices">
-                <li><button class="choice">A programming language</button></li>
-                <li><button class="choice">A type of coffee</button></li>
-                <li><button class="choice">A fruit</button></li>
+        <section id="question-container" class="hide">
+            <h2 id="question">Question</h2>
+            <ul id="choices"class="btn-grid">
+                <li><button class="choice"></button></li>
+                <li><button class="choice"></button></li>
+                <li><button class="choice"></button></li>
+                <li><button class="choice"></button></li>
             </ul>
         </section>
     </main>
+
     <footer>
         <form id="high-score-form">
             <label type="text" id="initials" placeholder="Your initials">
             <button id="submit-score">Submit</button>
         </form>
     </footer>
+
+    <script src="assets/style.js"></script>
+
 </body>
+
 </html>

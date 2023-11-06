@@ -17,20 +17,38 @@ const quizQuestions = [
     }
   ];
   
-  // Create variables to track the current question index, score, and timer
+  // Variables to track the current question index, score, and timer
   let currentQuestionIndex = 0;
   let score = 0;
   let timer;
   const timerDuration = 60; // Set the timer duration in seconds
   
   // Function to start the quiz
-  function startQuiz() {
-    // Start the timer
-    startTimer();
-  
-    // Display the first question
-    displayQuestion(currentQuestionIndex);
+function startQuiz() {
+  // Start the timer
+  startTimer() {
+    let timeLeft = timerDuration;
+    const timerDisplay = document.getElementById("time-remaining");
+
+    timer = setInterval(function() ) {
+      if (timeLeft <= 0) {
+        endGame();
+      }
+    } 
   }
+  ;
+
+  // Hide the "Start Quiz" button
+  const startButton = document.getElementById("start-button");
+  startButton.style.display = "none";
+
+  // Show the question container
+  const questionContainer = document.getElementById("question-container");
+  questionContainer.classList.remove("hide"); // Remove the 'hide' class to make it visible
+
+  // Display the first question
+  displayQuestion(currentQuestionIndex);
+}
   
   // Function to display a question and answer choices
   function displayQuestion(questionIndex) {

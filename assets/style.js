@@ -23,19 +23,23 @@ const quizQuestions = [
   let timer;
   const timerDuration = 60; // Set the timer duration in seconds
   
-  // Function to start the quiz
+ // Function to start the quiz
 function startQuiz() {
   // Start the timer
-  startTimer() {
-    let timeLeft = timerDuration;
-    const timerDisplay = document.getElementById("time-remaining");
+  startTimer();
+  let timeLeft = timerDuration;
+  const timerDisplay = document.getElementById("time-remaining");
 
-    timer = setInterval(function() ) {
-      if (timeLeft <= 0) {
-        endGame();
-      }
-    } 
-  }
+  timer = setInterval(function() {
+    if (timeLeft <= 0) {
+      clearInterval(timer); // Stop the timer
+      endGame();
+    } else {
+      timerDisplay.textContent = timeLeft; // Update the timer display
+      timeLeft--;
+    }
+  }, 1000); // The timer should run every 1 second (1000 milliseconds)
+}
   ;
 
   // Hide the "Start Quiz" button
@@ -48,7 +52,6 @@ function startQuiz() {
 
   // Display the first question
   displayQuestion(currentQuestionIndex);
-}
   
   // Function to display a question and answer choices
   function displayQuestion(questionIndex) {

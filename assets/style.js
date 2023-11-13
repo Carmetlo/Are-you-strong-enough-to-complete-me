@@ -34,7 +34,7 @@ startTimer();
 
 timerDisplay = document.getElementById("time-remaining");
 
-let timeLeft = timerDuration;
+timeLeft = timerDuration;
 
 
 timer = setInterval(function() {
@@ -95,9 +95,12 @@ if (selectedAnswer === correctAnswer) {
 } else {
 const timePenalty = 10;
 const timerDisplay = document.getElementById("timer-remaining");
+const messageElement = document.getElementById("incorrect-message");
+messageElement.textContent = "Incorrect!  Try again!";
 timeLeft -= timePenalty;//adding time penalty
-timerDisplay.textContent = timeLeft;
 }
+
+timerDisplay.textContent = timeLeft;
 
 currentQuestionIndex++;
 displayQuestion(currentQuestionIndex);

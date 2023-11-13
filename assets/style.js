@@ -88,14 +88,14 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
 if (selectedAnswer === correctAnswer) {
   score++;
 } else {
-  // Subtract time from the timer for incorrect answers (You can implement timer logic here)
+
 }
 
 currentQuestionIndex++;
 displayQuestion(currentQuestionIndex);
 }
 
-// Function to start the timer
+
 function startTimer() {
 let timeLeft = timerDuration;
 timer = setInterval(function () {
@@ -103,16 +103,14 @@ timer = setInterval(function () {
     endGame();
     clearInterval(timer);
   } else {
-    // Update the timer display
-    // You can display the remaining time to the user.
     timeLeft--;
   }
-}, 1000); // Timer updates every 1 second (1000 milliseconds).
+}, 1000); 
 }
 
-// Function to end the game
+
 function endGame() {
-// Display the final score
+
 const finalScore = score;
 
 localStorage.setItem('highScore', finalScore);

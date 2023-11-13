@@ -39,6 +39,7 @@ timer = setInterval(function() {
   if (timeLeft <= 0) {
     clearInterval(timer); // Stop the timer
     endGame();
+    gameOver();
   } else {
     timerDisplay.textContent = timeLeft; // Update the timer display
     timeLeft--;
@@ -46,14 +47,14 @@ timer = setInterval(function() {
 }, 1000); // The timer should run every 1 second (1000 milliseconds)
 
 // Show the question container
+const questionContainer = document.getElementById("question-container");
 questionContainer.classList.remove("hide");
 
 // Display the first question
 displayQuestion(currentQuestionIndex);
 }
 
-// Show the question container
-const questionContainer = document.getElementById("question-container");
+
 
 // Function to display a question and answer choices
 function displayQuestion(questionIndex) {
@@ -91,7 +92,9 @@ if (selectedAnswer === correctAnswer) {
   score++;
 } else {
 const timePenalty = 10;
+const timerDisplay = document.getElementById("timer-remaining");
 timeLeft -= timePenalty;//adding time penalty
+timerDisplay.textContent = timeLeft;
 }
 
 currentQuestionIndex++;
@@ -124,27 +127,27 @@ localStorage.setItem('highScore', finalScore);
 const startButton = document.getElementById("start-button");
 startButton.addEventListener("click", startQuiz);
 
-// function gameOver() {
-//   const gameOverText = document.getElementById("game-over");
-//   const tryAgainButton = document.getElementById("try-again");
+function gameOver() {
+  const gameOverText = document.getElementById("game-over");
+  const tryAgainButton = document.getElementById("try-again");
 
-//   gameOverText.classList.remove("hide");
-//   tryAgainButton.classList.remove("hide");
+  gameOverText.classList.remove("hide");
+  tryAgainButton.classList.remove("hide");
 
-//   clearInterval(timer);
-//   const timerDisplay = document.getElementById("time-remaining");
-//   timerDisplay.textContent = "0";
+  clearInterval(timer);
+  const timerDisplay = document.getElementById("time-remaining");
+  timerDisplay.textContent = "0";
 
-//   currentQuestionIndex = 0;
-//   score = 0;
+  currentQuestionIndex = 0;
+  score = 0;
 
-//   submitButton.style.display = "none";
-// }
+  submitButton.style.display = "none";
+}
 
-// const tryAgainButton = document.getElementById("try-again");
-// tryAgainButton.addEventListener("click", () =>{
-// gamOverText.classList.add("hide");
-// tryAgainButton.classList.add("hide");
+const tryAgainButton = document.getElementById("try-again");
+tryAgainButton.addEventListener("click", () =>{
+gamOverText.classList.add("hide");
+tryAgainButton.classList.add("hide");
 
-// startQuiz();
-// });
+startQuiz();
+});

@@ -23,6 +23,8 @@ const submitButton = document.getElementById("submit-score");
 let currentQuestionIndex = 0;
 let score = 0;
 let timer;
+let timerDisplay;
+let timeLeft;
 const timerDuration = 60; // Set the timer duration in seconds
 
 // start quiz
@@ -30,7 +32,7 @@ function startQuiz() {
 // start the timer
 startTimer();
 
-const timerDisplay = document.getElementById("time-remaining");
+timerDisplay = document.getElementById("time-remaining");
 
 let timeLeft = timerDuration;
 

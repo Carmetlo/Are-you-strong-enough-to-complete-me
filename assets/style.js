@@ -114,15 +114,9 @@ timer = setInterval(function () {
 function endGame() {
 // Display the final score
 const finalScore = score;
-// Allow users to save their initials and score in local storage or a data structure for high scores
-// Implement your high score logic here, e.g., store the score in localStorage.
-localStorage.setItem('highScore', finalScore);
-// You can also prompt the user to enter their initials and save it along with the score.
 
-// Reset the game or display a game-over screen.
-// Implement your game-over logic here.
+localStorage.setItem('highScore', finalScore);
 }
 
-// Add an event listener to the "Start Quiz" button to begin the quiz
 const startButton = document.getElementById("start-button");
 startButton.addEventListener("click", startQuiz);

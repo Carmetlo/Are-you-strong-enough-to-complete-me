@@ -119,3 +119,28 @@ localStorage.setItem('highScore', finalScore);
 
 const startButton = document.getElementById("start-button");
 startButton.addEventListener("click", startQuiz);
+
+// function gameOver() {
+//   const gameOverText = document.getElementById("game-over");
+//   const tryAgainButton = document.getElementById("try-again");
+
+//   gameOverText.classList.remove("hide");
+//   tryAgainButton.classList.remove("hide");
+
+//   clearInterval(timer);
+//   const timerDisplay = document.getElementById("time-remaining");
+//   timerDisplay.textContent = "0";
+
+//   currentQuestionIndex = 0;
+//   score = 0;
+
+//   submitButton.style.display = "none";
+// }
+
+// const tryAgainButton = document.getElementById("try-again");
+// tryAgainButton.addEventListener("click", () =>{
+// gamOverText.classList.add("hide");
+// tryAgainButton.classList.add("hide");
+
+// startQuiz();
+// });

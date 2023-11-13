@@ -88,7 +88,7 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
 if (selectedAnswer === correctAnswer) {
   score++;
 } else {
-cont timePenalty = 10;
+const timePenalty = 10;
 timeLeft -= timePenalty;//adding time penalty
 }
 

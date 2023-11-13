@@ -146,7 +146,7 @@ function gameOver() {
 
 const tryAgainButton = document.getElementById("try-again");
 tryAgainButton.addEventListener("click", () =>{
-gamOverText.classList.add("hide");
+gameOverText.classList.add("hide");
 tryAgainButton.classList.add("hide");
 
 startQuiz();

@@ -30,8 +30,10 @@ function startQuiz() {
 // start the timer
 startTimer();
 
-let timeLeft = timerDuration;
 const timerDisplay = document.getElementById("time-remaining");
+
+let timeLeft = timerDuration;
+
 
 timer = setInterval(function() {
   if (timeLeft <= 0) {
@@ -103,7 +105,9 @@ timer = setInterval(function () {
   if (timeLeft <= 0) {
     endGame();
     clearInterval(timer);
+    gameOver();
   } else {
+    timerDisplay.textContent = timeLeft;
     timeLeft--;
   }
 }, 1000); 

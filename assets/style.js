@@ -111,14 +111,11 @@ choiceButtons.forEach((choiceButton) => {
   );
 });
 
-
-currentQuestionIndex++;
 displayQuestion(currentQuestionIndex);
 }
 
 
 function startTimer() {
-let timeLeft = timerDuration;
 timer = setInterval(function () {
   if (timeLeft <= 0) {
     endGame();

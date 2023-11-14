@@ -154,13 +154,20 @@ function gameOver() {
   tryAgainButton.classList.remove("hide");
 
   clearInterval(timer);
+
+  const questionContainer = document.getElementById("queston-container");
+  const choicesList = document.getElementById("choices");
+  const submitButton = document.getElementById("submit-score");
+
+  questionContainer.classList.add("hide");
+  choicesList.classList.add("hide");
+  submitButton.style.display="none";
+
   const timerDisplay = document.getElementById("time-remaining");
   timerDisplay.textContent = "0";
 
   currentQuestionIndex = 0;
   score = 0;
-
-  submitButton.style.display = "none";
 }
 
 const tryAgainButton = document.getElementById("try-again");

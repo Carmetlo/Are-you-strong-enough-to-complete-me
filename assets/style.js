@@ -16,18 +16,18 @@ const quizQuestions = [
     correctAnswer: "Cascading Style Sheet"
   }
 ];
-const questionText = document.getElementById("question");
-const choicesList = document.getElementById("choices");
-const submitButton = document.getElementById("submit-score");
-const timerDuration = 60; // Set the timer duration in seconds
-// variables
 
+const submitButton = document.getElementById("submit-score");
+
+// variables
 let currentQuestionIndex = 0;
 let score = 0;
 let timer;
 let timerDisplay;
 let timeLeft;
-
+let choiceButtons;
+let choicesList;
+const timerDuration = 60; // Set the timer duration in seconds
 
 // start quiz
 function startQuiz() {
@@ -35,7 +35,6 @@ function startQuiz() {
 startTimer();
 
 timerDisplay = document.getElementById("time-remaining");
-
 timeLeft = timerDuration;
 
 
@@ -62,7 +61,8 @@ displayQuestion(currentQuestionIndex);
 
 // Function to display a question and answer choices
 function displayQuestion(questionIndex) {
-
+const questionText = document.getElementById("question");
+choicesList = document.getElementById("choices");
 
 // Check if all questions have been answered
 if (questionIndex >= quizQuestions.length) {
@@ -87,22 +87,24 @@ question.choices.forEach((choice, index) => {
   choiceButton.addEventListener("click", () => handleAnswerClick(choice, question.correctAnswer, index));
   choicesList.appendChild(choiceButton);
 });
+}
 
+choiceButtons = choicesList.querySelectorAll(".choice");
 
 // Function to handle user clicks on answer choices
-function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex, questionIndex) {
+function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
+  let timePenalty = 10;
+  const timerDisplay = document.getElementById("timer-remaining");
+  const messageElement = document.getElementById("incorrect-message");
 
 if (selectedAnswer === correctAnswer) {
   score++;
   currentQuestionIndex++;
 } else {
-const timePenalty = 10;
-const timerDisplay = document.getElementById("timer-remaining");
-messageElement.textContent = 'Incorrect! Select Again! -${timePenalty} penalty';
+messageElement.textContent = `Incorrect! Select Again! -${timePenalty} penalty`;
+choiceButtons[choiceIndex].classList.add("incorrect");
 timeLeft -= timePenalty;//Taking away time because an answer was incorrect
 }
-
-choiceButtons[choiceIndex].classList.add("incorrect");
 
 choiceButtons.forEach((button, index) => {
   if (index === quizQuestions[questionIndex].choices.indexOf(correctAnswer)) {
@@ -111,27 +113,15 @@ choiceButtons.forEach((button, index) => {
 });
 }
 
-
 timerDisplay.textContent = timeLeft;
 
-const choicesList = document.getElementById("choices");
-const choiceButtons = choicesList.querySelectorAll(".choice");
 choiceButtons.forEach((choiceButton) => {
   choiceButton.removeEventListener("click", () => 
-  handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex, questionIndex)
+  handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex)
   );
 });
 
 displayQuestion(currentQuestionIndex);
-}
-
-
-const choiceButtons = choicesList.querySelectorAll(".choice");
-choiceButtons.forEach((choiceButton) => {
-  choiceButton.removeEventListener("click", () => 
-  handleAnswerClick(choiceButton.textContent, quizQuestions[currentQuestionIndex].correctAnswer, index, currentQuestionIndex)
-  );
-});
 
 function startTimer() {
 timer = setInterval(function () {
@@ -166,7 +156,7 @@ function gameOver() {
 
   clearInterval(timer);
 
-  const questionContainer = document.getElementById("queston-container");
+  const questionContainer = document.getElementById("question-container");
   const choicesList = document.getElementById("choices");
   const submitButton = document.getElementById("submit-score");
 

@@ -114,6 +114,13 @@ choiceButtons.forEach((choiceButton) => {
 displayQuestion(currentQuestionIndex);
 }
 
+const choicesList = document.getElementById("choices");
+const choiceButtons = choicesList.querySelectorAll(".choice");
+choiceButtons.forEach((choiceButton) => {
+  choiceButton.removeEventListener("click", () => 
+  handleAnswerClick(choiceButton.textContent, quizQuestions[currentQuestionIndex].correctAnswer, index, currentQuestionIndex)
+  );
+});
 
 function startTimer() {
 timer = setInterval(function () {

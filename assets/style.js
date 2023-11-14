@@ -16,16 +16,18 @@ const quizQuestions = [
     correctAnswer: "Cascading Style Sheet"
   }
 ];
-
+const questionText = document.getElementById("question");
+const choicesList = document.getElementById("choices");
 const submitButton = document.getElementById("submit-score");
-
+const timerDuration = 60; // Set the timer duration in seconds
 // variables
+
 let currentQuestionIndex = 0;
 let score = 0;
 let timer;
 let timerDisplay;
 let timeLeft;
-const timerDuration = 60; // Set the timer duration in seconds
+
 
 // start quiz
 function startQuiz() {
@@ -60,8 +62,7 @@ displayQuestion(currentQuestionIndex);
 
 // Function to display a question and answer choices
 function displayQuestion(questionIndex) {
-const questionText = document.getElementById("question");
-const choicesList = document.getElementById("choices");
+
 
 // Check if all questions have been answered
 if (questionIndex >= quizQuestions.length) {
@@ -86,20 +87,30 @@ question.choices.forEach((choice, index) => {
   choiceButton.addEventListener("click", () => handleAnswerClick(choice, question.correctAnswer, index));
   choicesList.appendChild(choiceButton);
 });
-}
+
 
 // Function to handle user clicks on answer choices
 function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex, questionIndex) {
+
 if (selectedAnswer === correctAnswer) {
   score++;
   currentQuestionIndex++;
 } else {
 const timePenalty = 10;
 const timerDisplay = document.getElementById("timer-remaining");
-const messageElement = document.getElementById("incorrect-message");
-messageElement.textContent = "Incorrect!  Try again!";
-timeLeft -= timePenalty;//adding time penalty
+messageElement.textContent = 'Incorrect! Select Again! -${timePenalty} penalty';
+timeLeft -= timePenalty;//Taking away time because an answer was incorrect
 }
+
+choiceButtons[choiceIndex].classList.add("incorrect");
+
+choiceButtons.forEach((button, index) => {
+  if (index === quizQuestions[questionIndex].choices.indexOf(correctAnswer)) {
+    button.classList.add("correct");
+  }
+});
+}
+
 
 timerDisplay.textContent = timeLeft;
 
@@ -114,7 +125,7 @@ choiceButtons.forEach((choiceButton) => {
 displayQuestion(currentQuestionIndex);
 }
 
-const choicesList = document.getElementById("choices");
+
 const choiceButtons = choicesList.querySelectorAll(".choice");
 choiceButtons.forEach((choiceButton) => {
   choiceButton.removeEventListener("click", () => 

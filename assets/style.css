@@ -84,3 +84,13 @@ footer {
     border-radius: 3px;
     cursor: pointer;
 }
+
+.choice.incorrect {
+    background-color: red;
+    color: white;
+}
+
+.choice.correct {
+    background-color: green;
+    color: white;
+}

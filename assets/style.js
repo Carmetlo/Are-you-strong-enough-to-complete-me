@@ -89,9 +89,10 @@ question.choices.forEach((choice, index) => {
 }
 
 // Function to handle user clicks on answer choices
-function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
+function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex, questionIndex) {
 if (selectedAnswer === correctAnswer) {
   score++;
+  currentQuestionIndex++;
 } else {
 const timePenalty = 10;
 const timerDisplay = document.getElementById("timer-remaining");
@@ -101,6 +102,15 @@ timeLeft -= timePenalty;//adding time penalty
 }
 
 timerDisplay.textContent = timeLeft;
+
+const choicesList = document.getElementById("choices");
+const choiceButtons = choicesList.querySelectorAll(".choice");
+choiceButtons.forEach((choiceButton) => {
+  choiceButton.removeEventListener("click", () => 
+  handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex, questionIndex)
+  );
+});
+
 
 currentQuestionIndex++;
 displayQuestion(currentQuestionIndex);

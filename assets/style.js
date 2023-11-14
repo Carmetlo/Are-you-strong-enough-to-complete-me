@@ -25,8 +25,6 @@ let score = 0;
 let timer;
 let timerDisplay;
 let timeLeft;
-let choiceButtons;
-let choicesList;
 const timerDuration = 60; // Set the timer duration in seconds
 
 // start quiz
@@ -80,6 +78,8 @@ const question = quizQuestions[questionIndex];
 questionText.textContent = question.question;
 choicesList.innerHTML = "";
 
+const choiceButtons = [];
+
 question.choices.forEach((choice, index) => {
   const choiceButton = document.createElement("button");
   choiceButton.textContent = choice;
@@ -87,9 +87,11 @@ question.choices.forEach((choice, index) => {
   choiceButton.addEventListener("click", () => handleAnswerClick(choice, question.correctAnswer, index));
   choicesList.appendChild(choiceButton);
 });
-}
 
-choiceButtons = choicesList.querySelectorAll(".choice");
+  choiceButtons.forEach((choiceButton) => {
+  choiceButton.removeEventListener("click", () => handleAnswerClick(choiceButton.textContent, question.correctAnswer, index));  
+ });
+}
 
 // Function to handle user clicks on answer choices
 function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
@@ -111,17 +113,11 @@ choiceButtons.forEach((button, index) => {
     button.classList.add("correct");
   }
 });
-}
 
 timerDisplay.textContent = timeLeft;
 
-choiceButtons.forEach((choiceButton) => {
-  choiceButton.removeEventListener("click", () => 
-  handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex)
-  );
-});
-
 displayQuestion(currentQuestionIndex);
+}
 
 function startTimer() {
 timer = setInterval(function () {
@@ -138,9 +134,7 @@ timer = setInterval(function () {
 
 
 function endGame() {
-
 const finalScore = score;
-
 localStorage.setItem('highScore', finalScore);
 }
 
@@ -173,8 +167,8 @@ function gameOver() {
 
 const tryAgainButton = document.getElementById("try-again");
 tryAgainButton.addEventListener("click", () =>{
-gameOverText.classList.add("hide");
-tryAgainButton.classList.add("hide");
+  gameOverText.classList.add("hide");
+  tryAgainButton.classList.add("hide");
 
 startQuiz();
 });

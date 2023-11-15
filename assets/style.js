@@ -1,4 +1,3 @@
-// Quiz questions restarted from scratch need to complete in one sitting!
 const quizQuestions = [
   {
     question: "What does HTML stand for?",
@@ -28,39 +27,8 @@ let timeLeft;
 const timerDuration = 60; // Set the timer duration in seconds
 let choiceButtons = [];
 
-// start quiz
-function startQuiz() {
-  // start the timer
-  startTimer();
-
-  timerDisplay = document.getElementById("time-remaining");
-  timeLeft = timerDuration;
-
-  timer = setInterval(function () {
-    if (timeLeft <= 0) {
-      clearInterval(timer); // Stop the timer
-      endGame();
-      gameOver();
-    } else {
-      timerDisplay.textContent = timeLeft; // Update the timer display
-      timeLeft--;
-    }
-  }, 1000); // The timer should run every 1 second (1000 milliseconds)
-
-  // Show the question container
-  const questionContainer = document.getElementById("question-container");
-  questionContainer.classList.remove("hide");
-
-  // Display the first question
-  displayQuestion(currentQuestionIndex);
-}
-
 // Function to display a question and answer choices
 function displayQuestion(questionIndex) {
-  const questionText = document.getElementById("question");
-  const choicesList = document.getElementById("choices");
-
-  // Check if all questions have been answered
   if (questionIndex >= quizQuestions.length) {
     endGame();
     // Show the submit button when all questions have been answered
@@ -71,25 +39,23 @@ function displayQuestion(questionIndex) {
     submitButton.style.display = "none";
   }
 
-  // Display the question and answer choices
   const question = quizQuestions[questionIndex];
-  questionText.textContent = question.question;
-  choicesList.innerHTML = "";
-
-  // Create and append choice buttons
   choiceButtons = [];
+
+  const questionText = document.getElementById("question");
+  const choicesList = document.getElementById("choices");
 
   question.choices.forEach((choice, index) => {
     const choiceButton = document.createElement("button");
     choiceButton.textContent = choice; // Set text content here
     choiceButton.classList.add("choice");
-    choiceButton.addEventListener("click", () => handleAnswerClick(choice, question.correctAnswer, index));
-    choicesList.appendChild(choiceButton);
-    choiceButtons.push(choiceButton);
-  });
 
-  choiceButtons.forEach((choiceButton) => {
-    choiceButton.removeEventListener("click", () => handleAnswerClick(choiceButton.textContent, quizQuestions[currentQuestionIndex].correctAnswer, index));
+    const clickHandler = () => handleAnswerClick(choice, question.correctAnswer, index);
+
+    choiceButton.addEventListener("click", clickHandler);
+    choicesList.appendChild(choiceButton);
+
+    choiceButtons.push({ button: choiceButton, handler: clickHandler });
   });
 }
 
@@ -104,37 +70,38 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
   } else {
     messageElement.textContent = `Incorrect! Select Again! -${timePenalty} penalty`;
     choiceButtons[choiceIndex].classList.add("incorrect");
+    choiceButtons.forEach((button) => {
+      button.disabled = true;
+    });
     timeLeft -= timePenalty;
   }
 
-  choiceButtons.forEach((button, index) => {
-    if (index === quizQuestions[currentQuestionIndex].choices.indexOf(correctAnswer)) {
-      button.classList.add("correct");
-    }
-    button.disabled = true;
-  });
+  timerDisplay.textContent = timeLeft;
 
   setTimeout(function () {
+    if (selectedAnswer === correctAnswer) {
+      choiceButtons[choiceIndex].classList.add("correct");
+    }
     currentQuestionIndex++;
-    displayQuestion(currentQuestionIndex);
+    if (currentQuestionIndex < quizQuestions.length) {
+      displayQuestion(currentQuestionIndex);
+    } else {
+      endGame();
+      gameOver();
+    }
   }, 1000);
 }
-
-
-displayQuestion(currentQuestionIndex);
-
-
 
 // Function to start the timer
 function startTimer() {
   timer = setInterval(function () {
     if (timeLeft <= 0) {
       clearInterval(timer);
-      endGame();
       gameOver();
+      endGame();
     } else {
+      let timerDisplay = document.getElementById("time-remaining");
       if (timerDisplay) {
-        // Update the timer display only if the element exists
         timerDisplay.textContent = timeLeft;
       }
       timeLeft--;
@@ -142,14 +109,29 @@ function startTimer() {
   }, 1000);
 }
 
+// start quiz
+function startQuiz() {
+  quizQuestions[currentQuestionIndex].choices.forEach((choice, index) => {
+    timerDisplay = document.getElementById("time-remaining");
+    timeLeft = timerDuration;
+  });
+
+  // Show the question container
+  const questionContainer = document.getElementById("question-container");
+  questionContainer.classList.remove("hide");
+
+  displayQuestion(currentQuestionIndex);
+
+  startTimer();
+}
+
+// Function to end the game and store the final score
 function endGame() {
   const finalScore = score;
   localStorage.setItem('highScore', finalScore);
 }
 
-const startButton = document.getElementById("start-button");
-startButton.addEventListener("click", startQuiz);
-
+// Function to handle the game over state
 function gameOver() {
   const gameOverText = document.getElementById("game-over");
   const tryAgainButton = document.getElementById("try-again");
@@ -174,6 +156,9 @@ function gameOver() {
   score = 0;
 }
 
+const startButton = document.getElementById("start-button");
+startButton.addEventListener("click", startQuiz);
+
 const tryAgainButton = document.getElementById("try-again");
 tryAgainButton.addEventListener("click", () => {
   gameOverText.classList.add("hide");
@@ -181,3 +166,4 @@ tryAgainButton.addEventListener("click", () => {
 
   startQuiz();
 });
+

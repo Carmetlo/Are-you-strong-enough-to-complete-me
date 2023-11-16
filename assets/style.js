@@ -117,6 +117,7 @@ function startTimer() {
 function startQuiz() {
   questionContainer.classList.remove("hide");
   initialsInput.classList.add("hide");
+  startButton.style.display = "none";
 
   timeLeft = timerDuration;
 
@@ -134,6 +135,11 @@ const tryAgainButton = document.getElementById("try-again");
 // Function to end the game and store the final score
 function endGame() {
   const finalScore = score;
+
+  initialsInput.classList.remove("hide");
+  submitButton.style.display = "block";
+
+  submitButton.addEventListener("click", () => {
   const initials = initialsInput.value;
 
   const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
@@ -142,6 +148,13 @@ function endGame() {
 
   const sortedHighScores = highScores.sort((a, b) => b.score - a.score);
   highScoresList.innerHTML = sortedHighScores.map(score => `<li>${score.initials} - ${score.score}</li>`).join('');
+
+  questionContainer.style.display = "none";
+  choicesList.style.display = "none";
+  initialsInput.style.display = "none";
+  submitButton.style.display = "none";
+  highScoresList.style.display = "block";
+});
 }
 
 // Function to handle the game over state

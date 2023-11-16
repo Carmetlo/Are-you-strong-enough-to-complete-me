@@ -17,13 +17,9 @@ const quizQuestions = [
 ];
 
 const submitButton = document.getElementById("submit-score");
+const questionContainer = document.getElementById("question-container");
+const choicesList = document.getElementById("choices");
 
-window.onload = function () {
-  const initialsInput = document.getElementById("initials");
-  const highScoresList = document.getElementById("high-scores");
-
-  // Rest of your JavaScript code...
-};
 // variables
 let currentQuestionIndex = 0;
 let score = 0;
@@ -32,6 +28,7 @@ let timerDisplay = document.getElementById("time-remaining");
 let timeLeft;
 const timerDuration = 60; // Set the timer duration in seconds
 let choiceButtons = [];
+let highScores = [];
 
 // Function to display a question and answer choices
 function displayQuestion(questionIndex) {
@@ -56,7 +53,7 @@ function displayQuestion(questionIndex) {
     choicesList.removeChild(choicesList.firstChild);
   }
 
-  question.choices.forEach((choice, index) => {
+  quizQuestions[questionIndex].choices.forEach((choice, index) => {
     const choiceButton = document.createElement("button");
     choiceButton.textContent = choice; // Set text content here
     choiceButton.classList.add("choice");
@@ -73,13 +70,20 @@ function displayQuestion(questionIndex) {
 // Function to handle user clicks on answer choices
 function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
   let timePenalty = 10;
-  const timerDisplay = document.getElementById("timer-remaining");
+  const timerDisplay = document.getElementById("time-remaining");
   const messageElement = document.getElementById("incorrect-message");
 
   if (selectedAnswer === correctAnswer) {
     score++;
-    displayQuestion(++currentQuestionIndex);
-  } else {
+    choiceButtons[choiceIndex].button.classList.add("correct");
+
+    currentQuestionIndex++;
+    if (currentQuestionIndex < quizQuestions.length) {
+      displayQuestion(currentQuestionIndex);
+    } else {
+    endGame();
+  }
+} else {
     messageElement.textContent = `Incorrect! Select Again! -${timePenalty} penalty`;
     choiceButtons[choiceIndex].button.classList.add("incorrect");
     choiceButtons[choiceIndex].button.disabled = true;
@@ -87,23 +91,20 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
     timeLeft -= timePenalty;
     timerDisplay.textContent = timeLeft;
   }
+
+  setTimeout(function () {
+    if (selectedAnswer === correctAnswer) {
+      choiceButtons[choiceIndex].button.classList.add("correct");
+    }
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < quizQuestions.length) {
+      displayQuestion(currentQuestionIndex);
+    } else {
+      endGame();
+    }
+  }, 1000 * 1);
 }
-
-
-setTimeout(function () {
-  if (selectedAnswer === correctAnswer) {
-    choiceButtons[choiceIndex].button.classList.add("correct");
-  }
-  currentQuestionIndex++;
-  if (currentQuestionIndex < quizQuestions.length) {
-    displayQuestion(currentQuestionIndex);
-  } else {
-    endGame();
-    gameOver();
-  }
-}, 1000);
-
-
 // Function to start the timer
 function startTimer() {
   timer = setInterval(function () {
@@ -112,7 +113,6 @@ function startTimer() {
       gameOver();
       endGame();
     } else {
-      let timerDisplay = document.getElementById("time-remaining");
       if (timerDisplay) {
         timerDisplay.textContent = timeLeft;
       }
@@ -123,13 +123,10 @@ function startTimer() {
 
 // start quiz
 function startQuiz() {
-  timerDisplay = document.getElementById("time-remaining");
-  timeLeft = timerDuration;
-
-
-  // Show the question container
-  const questionContainer = document.getElementById("question-container");
   questionContainer.classList.remove("hide");
+  initialsInput.classList.add("hide");
+
+  timeLeft = timerDuration;
 
   displayQuestion(currentQuestionIndex);
 
@@ -149,7 +146,10 @@ function endGame() {
 
   const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
   highScores.push({ initials, score: finalScore });
-  localStorage.setItem('highScore', JSON.stringify(highScores));
+  localStorage.setItem('highScores', JSON.stringify(highScores));
+
+  const sortedHighScores = highScores.sort((a, b) => b.score - a.score);
+  highScoresList.innerHTML = sortedHighScores.map(score => `<li>${score.initials} - ${score.score}</li>`).join('');
 }
 
 // Function to handle the game over state
@@ -158,10 +158,6 @@ function gameOver() {
   tryAgainButton.classList.remove("hide");
 
   clearInterval(timer);
-
-  const questionContainer = document.getElementById("question-container");
-  const choicesList = document.getElementById("choices");
-  const submitButton = document.getElementById("submit-score");
 
   questionContainer.classList.add("hide");
   choicesList.classList.add("hide");
@@ -172,6 +168,8 @@ function gameOver() {
 
   currentQuestionIndex = 0;
   score = 0;
+
+  highScoresList.classList.remove("hide");
 }
 
 const startButton = document.getElementById("start-button");
@@ -183,4 +181,3 @@ tryAgainButton.addEventListener("click", () => {
 
   startQuiz();
 });
-

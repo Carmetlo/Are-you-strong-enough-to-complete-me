@@ -77,12 +77,16 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
     score++;
     choiceButtons[choiceIndex].button.classList.add("correct");
 
-    currentQuestionIndex++;
+    setTimeout(function () {
+      choiceButtons[choiceIndex].button.classList.remove("correct");
+      currentQuestionIndex++;
+
     if (currentQuestionIndex < quizQuestions.length) {
       displayQuestion(currentQuestionIndex);
     } else {
     endGame();
   }
+}, 1000 * 1);
 } else {
     messageElement.textContent = `Incorrect! Select Again! -${timePenalty} penalty`;
     choiceButtons[choiceIndex].button.classList.add("incorrect");
@@ -91,20 +95,8 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
     timeLeft -= timePenalty;
     timerDisplay.textContent = timeLeft;
   }
-
-  setTimeout(function () {
-    if (selectedAnswer === correctAnswer) {
-      choiceButtons[choiceIndex].button.classList.add("correct");
-    }
-    currentQuestionIndex++;
-
-    if (currentQuestionIndex < quizQuestions.length) {
-      displayQuestion(currentQuestionIndex);
-    } else {
-      endGame();
-    }
-  }, 1000 * 1);
 }
+
 // Function to start the timer
 function startTimer() {
   timer = setInterval(function () {

@@ -42,9 +42,14 @@ function displayQuestion(questionIndex) {
   const question = quizQuestions[questionIndex];
   choiceButtons = [];
 
+  
   const questionText = document.getElementById("question");
   const choicesList = document.getElementById("choices");
 
+while (choicesList.firstChild) {
+    choicesList.removeChild(choicesList.firstChild);
+  }
+  
   question.choices.forEach((choice, index) => {
     const choiceButton = document.createElement("button");
     choiceButton.textContent = choice; // Set text content here
@@ -67,20 +72,20 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
 
   if (selectedAnswer === correctAnswer) {
     score++;
+    displayQuestion(++currentQuestionIndex);
   } else {
     messageElement.textContent = `Incorrect! Select Again! -${timePenalty} penalty`;
-    choiceButtons[choiceIndex].classList.add("incorrect");
-    choiceButtons.forEach((button) => {
-      button.disabled = true;
-    });
+    choiceButtons[choiceIndex].button.classList.add("incorrect");
+    choiceButtons[choiceIndex].button.disabled = true;
+    
     timeLeft -= timePenalty;
-  }
-
-  timerDisplay.textContent = timeLeft;
+    timerDisplay.textContent = timeLeft;
+  }}
+ 
 
   setTimeout(function () {
     if (selectedAnswer === correctAnswer) {
-      choiceButtons[choiceIndex].classList.add("correct");
+      choiceButtons[choiceIndex].button.classList.add("correct");
     }
     currentQuestionIndex++;
     if (currentQuestionIndex < quizQuestions.length) {
@@ -90,7 +95,7 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
       gameOver();
     }
   }, 1000);
-}
+
 
 // Function to start the timer
 function startTimer() {
@@ -111,10 +116,9 @@ function startTimer() {
 
 // start quiz
 function startQuiz() {
-  quizQuestions[currentQuestionIndex].choices.forEach((choice, index) => {
     timerDisplay = document.getElementById("time-remaining");
     timeLeft = timerDuration;
-  });
+  
 
   // Show the question container
   const questionContainer = document.getElementById("question-container");

@@ -35,8 +35,8 @@ let finalScore;
 // Function to display a question and answer choices
 function displayQuestion(questionIndex) {
   if (questionIndex >= quizQuestions.length) {
-    
-   //show submit button when all questions are answered
+
+    //show submit button when all questions are answered
     submitButton.style.display = "block";
     return;
   } else {
@@ -73,7 +73,7 @@ function displayQuestion(questionIndex) {
 function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
   let timePenalty = 10;
   const timerDisplay = document.getElementById("time-remaining");
-  const messageElement = document.getElementById("incorrect-message");
+  
 
   if (selectedAnswer === correctAnswer) {
     score++;
@@ -83,15 +83,16 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
       choiceButtons[choiceIndex].button.classList.remove("correct");
       currentQuestionIndex++;
 
-    if (currentQuestionIndex < quizQuestions.length) {
-      displayQuestion(currentQuestionIndex);
-    } else if (timeLeft > 0) {
-      endGame();
-    } else { 
-    endGame();
-  }
-}, 1000 * 1);
-} else {
+      if (currentQuestionIndex < quizQuestions.length) {
+        displayQuestion(currentQuestionIndex);
+      } else if (timeLeft > 0) {
+        setTimeout(endGame, 1000);
+      } else {
+        setTimeout(endGame, 1000);
+      }
+    }, 1000 * 1);
+  } else {
+    score--;
     messageElement.textContent = `Incorrect! Select Again! -${timePenalty} penalty`;
     choiceButtons[choiceIndex].button.classList.add("incorrect");
     choiceButtons[choiceIndex].button.disabled = true;
@@ -107,8 +108,13 @@ function startTimer() {
     if (timeLeft <= 0) {
       clearInterval(timer);
       endGame();
-      if (currentQuestionIndex >= quizQuestions.length) {
-        endGame();
+      if (currentQuestionIndex < quizQuestions.length) {
+        displayQuestion(currentQuestionIndex);
+      } else if (timeLeft > 0) {
+        setTimeout(endGame, 1000);
+      } else {
+        setTimeout(endGame, 1000);
+
       }
     } else {
       if (timerDisplay) {
@@ -146,12 +152,22 @@ function endGame() {
 
   questionContainer.style.display = "none";
   choicesList.style.display = "none";
+
+  function clearScores() {
+    localStorage.removeItem('highScores');
+    highScoresList.innerHTML = '';
+  }
+  const clearScoresButton = document.getElementById("clear-scores");
+  clearScoresButton.addEventListener("click", clearScores);
+  clearScoresButton.classList.remove("hide");
+
+  clearInterval(timer)
 }
 
 function submitScore(event) {
   if (event) {
-  event.preventDefault();
-} 
+    event.preventDefault();
+  }
 
   const initials = initialsInput.value;
 
@@ -160,21 +176,20 @@ function submitScore(event) {
   localStorage.setItem('highScores', JSON.stringify(highScores));
 
   const sortedHighScores = highScores.sort((a, b) => b.score - a.score);
-  highScoresList.innerHTML = sortedHighScores.map(score => `<li>${score.initials} - ${score.score}</li>`).join('');
+  highScoresList.innerHTML = "High Scores:<br><br>" + sortedHighScores.map(score => `<li>${score.initials} - ${score.score}</li>`).join('');
 
-initialsInput.style.display = "none";
+  initialsInput.style.display = "none";
   submitButton.style.display = "none";
   tryAgainButton.style.display = "block";
   highScoresList.style.display = "block";
 }
 
 submitButton.addEventListener("click", submitScore);
+
 // Function to handle the game over state
 function gameOver() {
   gameOverText.classList.remove("hide");
   tryAgainButton.classList.remove("hide");
-
-  clearInterval(timer);
 
   questionContainer.classList.add("hide");
   choicesList.classList.add("hide");
@@ -188,6 +203,8 @@ function gameOver() {
   score = 0;
 
   highScoresList.classList.remove("hide");
+
+  clearInterval(timer)
 }
 
 const startButton = document.getElementById("start-button");

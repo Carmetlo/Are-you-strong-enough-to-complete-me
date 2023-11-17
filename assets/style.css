@@ -24,6 +24,14 @@ h2 {
     color: #509e22;
 }
 
+#initials {
+    display: none;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
 main {
     max-width: 600px;
     margin: 0 auto;

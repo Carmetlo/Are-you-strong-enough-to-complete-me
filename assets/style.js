@@ -15,7 +15,7 @@ const quizQuestions = [
     correctAnswer: "Cascading Style Sheet"
   }
 ];
-
+const initialsInput = document.getElementById("initials");
 const submitButton = document.getElementById("submit-score");
 const questionContainer = document.getElementById("question-container");
 const choicesList = document.getElementById("choices");
@@ -106,7 +106,7 @@ function startTimer() {
   timer = setInterval(function () {
     if (timeLeft <= 0) {
       clearInterval(timer);
-      gameOver();
+      endGame();
       if (currentQuestionIndex >= quizQuestions.length) {
         endGame();
       }
@@ -133,7 +133,6 @@ function startQuiz() {
 }
 
 // Game over elements
-const initialsInput = document.getElementById("initials");
 const highScoresList = document.getElementById("high-scores");
 const gameOverText = document.getElementById("game-over");
 const tryAgainButton = document.getElementById("try-again");
@@ -142,14 +141,18 @@ const tryAgainButton = document.getElementById("try-again");
 function endGame() {
   finalScore = score;
 
-  initialsInput.classList.remove("hide");
+  initialsInput.style.display = "inline-block";
   submitButton.style.display = "block";
 
-  gameOver();
+  questionContainer.style.display = "none";
+  choicesList.style.display = "none";
 }
 
 function submitScore(event) {
-  event.preventDefault(); 
+  if (event) {
+  event.preventDefault();
+} 
+
   const initials = initialsInput.value;
 
   const highScores = JSON.parse(localStorage.getItem('highScores')) || [];
@@ -159,11 +162,10 @@ function submitScore(event) {
   const sortedHighScores = highScores.sort((a, b) => b.score - a.score);
   highScoresList.innerHTML = sortedHighScores.map(score => `<li>${score.initials} - ${score.score}</li>`).join('');
 
-  questionContainer.style.display = "none";
-  choicesList.style.display = "none";
-  initialsInput.style.display = "none";
+initialsInput.style.display = "none";
   submitButton.style.display = "none";
   tryAgainButton.style.display = "block";
+  highScoresList.style.display = "block";
 }
 
 submitButton.addEventListener("click", submitScore);

@@ -36,33 +36,34 @@ let timeLeft;
 let choiceButtons = [];
 let highScores = [];
 let finalScore;
+var scoresUL = document.getElementById ("high-scores");
 
 // start quiz
 function startQuiz() {
-  questionContainer.classList.remove("hide");
+  questionContainer.removeAttribute("class");
   initialsInput.classList.add("hide");
-  startButton.style.display = "none";
+  startButton.setAttribute ("class", "hide")
 
   timeLeft = timerDuration;
 
-  displayQuestion(currentQuestionIndex);
+  displayQuestion();
 
   startTimer();
 }
 
 // Function to display a question and answer choices
-function displayQuestion(questionIndex) {
-  if (questionIndex >= quizQuestions.length) {
+function displayQuestion() {
+  // if (currentQuestionIndex >= quizQuestions.length) {
 
-    //show submit button when all questions are answered
-    submitButton.style.display = "block";
-    return;
-  } else {
-    // Hide the submit button for regular questions
-    submitButton.style.display = "none";
-  }
+  //   //show submit button when all questions are answered
+  //   submitButton.style.display = "block";
+  //   return;
+  // } else {
+  //   // Hide the submit button for regular questions
+  //   submitButton.style.display = "none";
+  // }
 
-  const question = quizQuestions[questionIndex];
+  const question = quizQuestions[currentQuestionIndex];
   choiceButtons = [];
 
 
@@ -73,7 +74,7 @@ function displayQuestion(questionIndex) {
     choicesList.removeChild(choicesList.firstChild);
   }
 
-  quizQuestions[questionIndex].choices.forEach((choice, index) => {
+  quizQuestions[currentQuestionIndex].choices.forEach((choice, index) => {
     const choiceButton = document.createElement("button");
     choiceButton.textContent = choice; // Set text content here
     choiceButton.classList.add("choice");
@@ -105,7 +106,7 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
       currentQuestionIndex++;
 
       if (currentQuestionIndex < quizQuestions.length) {
-        displayQuestion(currentQuestionIndex);
+        displayQuestion();
       } else if (timeLeft > 0) {
         setTimeout(endGame, 1000);
       } else {
@@ -113,13 +114,14 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
       }
     }, 1000 * 1);
   } else {
-    score--;
+    timeLeft -=10;
+    timerDisplay.textContent = timeLeft;
     choiceButtons[choiceIndex].button.classList.add("incorrect");
     choiceButtons[choiceIndex].button.disabled = true;
 
-    timeLeft -= timePenalty;
-    if (timerDisplay)
-    timerDisplay.textContent = timeLeft;
+    // timeLeft -= timePenalty;
+    // if (timerDisplay)
+    // timerDisplay.textContent = timeLeft;
   }
   updateScoreDisplay();
 }
@@ -141,18 +143,13 @@ function startTimer() {
 
 // Storing the final score and displaying try again button
 function endGame() {
-  finalScore = score;
-
+  finalScore = score * timeLeft;
+  
   initialsInput.style.display = "inline-block";
   submitButton.style.display = "block";
 
   questionContainer.style.display = "none";
   choicesList.style.display = "none";
-
-  function clearScores() {
-    localStorage.removeItem('highScores');
-    highScoresList.innerHTML = '';
-  }
 
   clearScoresButton.classList.remove("hide");
 
@@ -171,14 +168,23 @@ function submitScore(event) {
   localStorage.setItem('highScores', JSON.stringify(highScores));
 
   const sortedHighScores = highScores.sort((a, b) => b.score - a.score);
-  highScoresList.innerHTML = "High Scores:<br><br>" + sortedHighScores.map(score => `<li>${score.initials} - ${score.score}</li>`).join('');
-
+  //highScoresList.innerHTML = "High Scores:<br><br>" + sortedHighScores.map(score => `<li>${score.initials} - ${score.score}</li>`).join('');
+  printHighScores(sortedHighScores);
   initialsInput.style.display = "none";
   submitButton.style.display = "none";
   tryAgainButton.style.display = "block";
-  highScoresList.style.display = "block";
+  //highScoresList.style.display = "block";
 }
-
+function printHighScores (scores) {
+  scoresUL.textContent = "High Scores: "
+  scoresUL.classList.remove("hide");
+  scores.forEach (function (score){
+    var li = document.createElement ("li")
+    li.textContent = score.initials + ": " + score.score
+    scoresUL.appendChild (li)
+  })
+  //scoresUL.append(scores.map (score => `<li> ${score.intitals}: ${score.score} </li>`))
+}
 // Function to handle the game over state
 function gameOver() {
   gameOverText.classList.remove("hide");
@@ -195,12 +201,12 @@ function gameOver() {
   score = 0;
 
   highScoresList.classList.remove("hide");
-
+  displayButtons ();
   clearInterval(timer)
 }
 
 
-startButton.addEventListener("click", startQuiz);
+
 submitButton.addEventListener("click", submitScore);
 tryAgainButton.addEventListener("click", () => {
   gameOverText.classList.add("hide");
@@ -208,4 +214,16 @@ tryAgainButton.addEventListener("click", () => {
 
   startQuiz();
 });
+
+function clearScores() {
+localStorage.removeItem ("highScores")
+scoresUL.innerHTML = ""
+
+}
+function displayButtons (){
+//clearScoresButton.setAttribute ("class","hide");
+currentQuestionIndex = 0;
+startButton.removeAttribute ("class");
+}
 clearScoresButton.addEventListener("click", clearScores);
+startButton.addEventListener("click", startQuiz);

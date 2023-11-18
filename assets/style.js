@@ -87,6 +87,11 @@ function displayQuestion(questionIndex) {
   });
 }
 
+function updateScoreDisplay() {
+  const scoreDisplay = document.getElementById("high-scores"); 
+  scoreDisplay.textContent = score;
+}
+
 // Function to handle user clicks on answer choices
 function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
   let timePenalty = 10;
@@ -109,13 +114,14 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
     }, 1000 * 1);
   } else {
     score--;
-    messageElement.textContent = `Incorrect! Select Again! -${timePenalty} penalty`;
     choiceButtons[choiceIndex].button.classList.add("incorrect");
     choiceButtons[choiceIndex].button.disabled = true;
 
     timeLeft -= timePenalty;
+    if (timerDisplay)
     timerDisplay.textContent = timeLeft;
   }
+  updateScoreDisplay();
 }
 
 // Function to start the timer
@@ -124,19 +130,11 @@ function startTimer() {
     if (timeLeft <= 0) {
       clearInterval(timer);
       endGame();
-      if (currentQuestionIndex < quizQuestions.length) {
-        displayQuestion(currentQuestionIndex);
-      } else if (timeLeft > 0) {
-        setTimeout(endGame, 1000);
-      } else {
-        setTimeout(endGame, 1000);
-
-      }
     } else {
+      timeLeft--;
       if (timerDisplay) {
         timerDisplay.textContent = timeLeft;
       }
-      timeLeft--;
     }
   }, 1000);
 }

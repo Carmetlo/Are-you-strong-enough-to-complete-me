@@ -1,3 +1,14 @@
+const startButton = document.getElementById("start-button");
+const initialsInput = document.getElementById("initials");
+const submitButton = document.getElementById("submit-score");
+const questionContainer = document.getElementById("question-container");
+const choicesList = document.getElementById("choices");
+const highScoresList = document.getElementById("high-scores");
+const gameOverText = document.getElementById("game-over");
+const tryAgainButton = document.getElementById("try-again");
+const clearScoresButton = document.getElementById("clear-scores");
+const timerDuration = 60; // Set the timer duration in seconds
+
 const quizQuestions = [
   {
     question: "What does HTML stand for?",
@@ -15,13 +26,8 @@ const quizQuestions = [
     correctAnswer: "Cascading Style Sheet"
   }
 ];
-const initialsInput = document.getElementById("initials");
-const submitButton = document.getElementById("submit-score");
-const questionContainer = document.getElementById("question-container");
-const choicesList = document.getElementById("choices");
-const timerDuration = 60; // Set the timer duration in seconds
 
-// variables
+// game
 let currentQuestionIndex = 0;
 let score = 0;
 let timer;
@@ -31,6 +37,18 @@ let choiceButtons = [];
 let highScores = [];
 let finalScore;
 
+// start quiz
+function startQuiz() {
+  questionContainer.classList.remove("hide");
+  initialsInput.classList.add("hide");
+  startButton.style.display = "none";
+
+  timeLeft = timerDuration;
+
+  displayQuestion(currentQuestionIndex);
+
+  startTimer();
+}
 
 // Function to display a question and answer choices
 function displayQuestion(questionIndex) {
@@ -72,8 +90,6 @@ function displayQuestion(questionIndex) {
 // Function to handle user clicks on answer choices
 function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
   let timePenalty = 10;
-  const timerDisplay = document.getElementById("time-remaining");
-  
 
   if (selectedAnswer === correctAnswer) {
     score++;
@@ -125,24 +141,6 @@ function startTimer() {
   }, 1000);
 }
 
-// start quiz
-function startQuiz() {
-  questionContainer.classList.remove("hide");
-  initialsInput.classList.add("hide");
-  startButton.style.display = "none";
-
-  timeLeft = timerDuration;
-
-  displayQuestion(currentQuestionIndex);
-
-  startTimer();
-}
-
-// Game over elements
-const highScoresList = document.getElementById("high-scores");
-const gameOverText = document.getElementById("game-over");
-const tryAgainButton = document.getElementById("try-again");
-
 // Storing the final score and displaying try again button
 function endGame() {
   finalScore = score;
@@ -157,8 +155,7 @@ function endGame() {
     localStorage.removeItem('highScores');
     highScoresList.innerHTML = '';
   }
-  const clearScoresButton = document.getElementById("clear-scores");
-  clearScoresButton.addEventListener("click", clearScores);
+
   clearScoresButton.classList.remove("hide");
 
   clearInterval(timer)
@@ -184,8 +181,6 @@ function submitScore(event) {
   highScoresList.style.display = "block";
 }
 
-submitButton.addEventListener("click", submitScore);
-
 // Function to handle the game over state
 function gameOver() {
   gameOverText.classList.remove("hide");
@@ -196,7 +191,6 @@ function gameOver() {
   submitButton.style.display = "none";
   initialsInput.style.display = "none";
 
-  const timerDisplay = document.getElementById("time-remaining");
   timerDisplay.textContent = "0";
 
   currentQuestionIndex = 0;
@@ -207,12 +201,13 @@ function gameOver() {
   clearInterval(timer)
 }
 
-const startButton = document.getElementById("start-button");
-startButton.addEventListener("click", startQuiz);
 
+startButton.addEventListener("click", startQuiz);
+submitButton.addEventListener("click", submitScore);
 tryAgainButton.addEventListener("click", () => {
   gameOverText.classList.add("hide");
   tryAgainButton.classList.add("hide");
 
   startQuiz();
 });
+clearScoresButton.addEventListener("click", clearScores);

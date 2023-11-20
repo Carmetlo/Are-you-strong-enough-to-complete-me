@@ -23,7 +23,7 @@ viewScoresButton.addEventListener('click', function() {
   questionContainer.classList.add('hide');
   choicesList.classList.add('hide');
   gameOverText.classList.add('hide');
-  tryAgainButton.classList.add('hide');
+  tryAgainButton.classList.remove('hide');
   clearScoresButton.classList.add('hide');
   timerDisplay.classList.add('hide');
   introMessage.classList.add('hide');

@@ -172,7 +172,7 @@ function submitScore(event) {
   printHighScores(sortedHighScores);
   initialsInput.style.display = "none";
   submitButton.style.display = "none";
-  tryAgainButton.style.display = "block";
+  tryAgainButton.classList.remove("hide");
   //highScoresList.style.display = "block";
 }
 function printHighScores (scores) {
@@ -209,6 +209,7 @@ function gameOver() {
 
 submitButton.addEventListener("click", submitScore);
 tryAgainButton.addEventListener("click", () => {
+  location.reload();
   gameOverText.classList.add("hide");
   tryAgainButton.classList.add("hide");
 

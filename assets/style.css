@@ -3,6 +3,11 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
 header {
@@ -10,6 +15,7 @@ header {
     color: #fff;
     padding: 10px;
     text-align: center;
+    width: 100%;
 }
 
 .hide {
@@ -34,31 +40,67 @@ h2 {
     margin-right: 10px;
 }
 
+#game-over {
+    color:red ;
+    font-size: 2em;
+    font-weight: bold;
+}
+#intro-message {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
 main {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 20px auto;
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    justify-content: center;
+    text-align: center;
 }
 
 #question-container {
     margin-top: 20px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#start-button {
+    margin: 0;
+    background-color: #509e22;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
 }
 
 #question {
-    font-size: 18px;
+    font-size: 30px;
     margin-bottom: 10px;
+    text-align: center;
+    width: 80%;
+    margin: auto;
 }
 
 ul {
     list-style-type: none;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 li {
     margin-bottom: 10px;
+    width: 100%;
 }
 
 .choice {
@@ -68,15 +110,20 @@ li {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    text-align: center;
 }
 
 footer {
     text-align: center;
     margin-top: 20px;
+    width: 100%;
 }
 
 #high-score-form {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 #initials {
@@ -90,10 +137,24 @@ footer {
     background-color: #007bff;
     color: #fff;
     border: none;
-    padding: 5px 10px;
+    margin: 0;
     border-radius: 3px;
     cursor: pointer;
+    
 }
+
+#message-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
 .choice.incorrect {
     background-color: red;
@@ -103,4 +164,14 @@ footer {
 .choice.correct {
     background-color: green;
     color: white;
+}
+
+#try-again {
+    font-size: 25px ;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    margin: 0;
+    border-radius: 3px;
+    cursor: pointer;
 }

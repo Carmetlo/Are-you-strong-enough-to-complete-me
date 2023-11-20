@@ -1,6 +1,7 @@
 const startButton = document.getElementById("start-button");
 const initialsInput = document.getElementById("initials");
 const submitButton = document.getElementById("submit-score");
+const questionText = document.getElementById("question");
 const questionContainer = document.getElementById("question-container");
 const choicesList = document.getElementById("choices");
 const highScoresList = document.getElementById("high-scores");
@@ -8,6 +9,8 @@ const gameOverText = document.getElementById("game-over");
 const tryAgainButton = document.getElementById("try-again");
 const clearScoresButton = document.getElementById("clear-scores");
 const timerDuration = 60; // Set the timer duration in seconds
+const introMessage = document.getElementById("intro-message");
+const question = document.getElementById("question");//question text element hiding
 
 const quizQuestions = [
   {
@@ -42,7 +45,12 @@ var scoresUL = document.getElementById ("high-scores");
 function startQuiz() {
   questionContainer.removeAttribute("class");
   initialsInput.classList.add("hide");
-  startButton.setAttribute ("class", "hide")
+  startButton.setAttribute ("class","hide");
+  introMessage.classList.add("hide");
+ 
+  if (currentQuestionIndex < quizQuestions.length) {
+    question.classList.remove("hide");
+  }
 
   timeLeft = timerDuration;
 
@@ -53,20 +61,9 @@ function startQuiz() {
 
 // Function to display a question and answer choices
 function displayQuestion() {
-  // if (currentQuestionIndex >= quizQuestions.length) {
-
-  //   //show submit button when all questions are answered
-  //   submitButton.style.display = "block";
-  //   return;
-  // } else {
-  //   // Hide the submit button for regular questions
-  //   submitButton.style.display = "none";
-  // }
 
   const question = quizQuestions[currentQuestionIndex];
   choiceButtons = [];
-
-
   const questionText = document.getElementById("question");
   const choicesList = document.getElementById("choices");
 
@@ -97,9 +94,17 @@ function updateScoreDisplay() {
 function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
   let timePenalty = 10;
 
+  const message = document.createElement("p");
+  message.classList.add("message");
+
+  const messageContainer = document.getElementById("message-container");
+
   if (selectedAnswer === correctAnswer) {
     score++;
     choiceButtons[choiceIndex].button.classList.add("correct");
+
+    message.textContent = "Correct!";
+    message.style.color = "green";
 
     setTimeout(function () {
       choiceButtons[choiceIndex].button.classList.remove("correct");
@@ -119,10 +124,17 @@ function handleAnswerClick(selectedAnswer, correctAnswer, choiceIndex) {
     choiceButtons[choiceIndex].button.classList.add("incorrect");
     choiceButtons[choiceIndex].button.disabled = true;
 
-    // timeLeft -= timePenalty;
-    // if (timerDisplay)
-    // timerDisplay.textContent = timeLeft;
+    message.textContent = "Incorrect!";
+    message.style.color = "red";
+
   }
+
+  messageContainer.appendChild(message);
+
+  setTimeout(function () {
+    messageContainer.removeChild(message);
+  }, 1000 * 1);
+
   updateScoreDisplay();
 }
 
@@ -131,7 +143,7 @@ function startTimer() {
   timer = setInterval(function () {
     if (timeLeft <= 0) {
       clearInterval(timer);
-      endGame();
+      gameOver();
     } else {
       timeLeft--;
       if (timerDisplay) {
@@ -145,7 +157,7 @@ function startTimer() {
 function endGame() {
   finalScore = score * timeLeft;
   
-  initialsInput.style.display = "inline-block";
+  initialsInput.style.display = "flex";
   submitButton.style.display = "block";
 
   questionContainer.style.display = "none";
@@ -189,11 +201,14 @@ function printHighScores (scores) {
 function gameOver() {
   gameOverText.classList.remove("hide");
   tryAgainButton.classList.remove("hide");
-
-  questionContainer.classList.add("hide");
+  startButton.setAttribute ("class","hide");
   choicesList.classList.add("hide");
   submitButton.style.display = "none";
   initialsInput.style.display = "none";
+  highScoresList.classList.add("hide");
+  console.log("Game Over!");
+
+  question.classList.add("hide");
 
   timerDisplay.textContent = "0";
 
@@ -201,11 +216,8 @@ function gameOver() {
   score = 0;
 
   highScoresList.classList.remove("hide");
-  displayButtons ();
   clearInterval(timer)
 }
-
-
 
 submitButton.addEventListener("click", submitScore);
 tryAgainButton.addEventListener("click", () => {

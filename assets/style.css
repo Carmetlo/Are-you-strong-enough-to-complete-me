@@ -119,11 +119,48 @@ footer {
     width: 100%;
 }
 
+#view-scores {
+    padding: 10px 20px;
+    font-size: 1.2em;
+    color: #007BFF;
+    border: 2px solid #007BFF;
+    border-radius: 5px;
+    background: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: fixed;
+    top: 10px;
+    right:
+     10px;
+}
 #high-score-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    padding: 20px;
+  margin: 20px auto;
+  max-width: 500px;
+}
+
+#high-score-form input,
+#high-score-form button {
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#high-score-form button {
+  color: #007BFF;
+  background: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#high-score-form button:hover {
+  color: #0056b3;
 }
 
 #initials {
@@ -150,8 +187,8 @@ footer {
   }
   
   .message {
+    font-size: 25px;
     position: absolute;
-    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
   }

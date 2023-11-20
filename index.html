@@ -8,22 +8,23 @@
 </head>
 <body>
     <header>
+        <button id="view-scores">View Scores</button>
         <h1>Did you study enough to complete me?</h1>
         <section id="timer">Time Left: <span id="time-remaining">60</span> seconds</section>
        
     </header>
-
+    
     <main>
         <div id="intro-message">
-            <p>Welcome to the quiz! You need to complete the quiz within a time limit. Be careful, each time you answer a question incorrectly, 10 seconds will be shaved off your time. Good luck!</p>
+            <p>Welcome to the quiz! You need to complete the quiz within 60 second time limit. Be careful, each time you answer a question incorrectly, 10 seconds will be shaved off your time. Good luck!</p>
         </div>
-       
+        <button id="start-button">Start Quiz</button>
         <div id="button-row">
         </div>
         <button id="clear-scores" class="hide">Clear Scores</button> 
         <button id="try-again" class="hide">Try Again</button>
         <h2 id="question" class="hide">Question</h2>
-        <div id="question-container">
+        <div id="question-container" class="hide">
             
             <ul id="choices"class="btn-grid">      
             </ul>
@@ -42,7 +43,7 @@
             <p>Game Over!</p>
           </div>
           
-          <button id="start-button">Start Quiz</button>
+         
           <div id="message-container"></div>
     </footer>
 

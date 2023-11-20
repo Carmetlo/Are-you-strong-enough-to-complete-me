@@ -10,23 +10,44 @@ const tryAgainButton = document.getElementById("try-again");
 const clearScoresButton = document.getElementById("clear-scores");
 const timerDuration = 60; // Set the timer duration in seconds
 const introMessage = document.getElementById("intro-message");
-const question = document.getElementById("question");//question text element hiding
+const question = document.getElementById("question");
 
+
+const viewScoresButton = document.getElementById('view-scores');
+
+viewScoresButton.addEventListener('click', function() {
+  // Hide all other elements
+  startButton.classList.add('hide');
+  initialsInput.classList.add('hide');
+  questionText.classList.add('hide');
+  questionContainer.classList.add('hide');
+  choicesList.classList.add('hide');
+  gameOverText.classList.add('hide');
+  tryAgainButton.classList.add('hide');
+  clearScoresButton.classList.add('hide');
+  timerDisplay.classList.add('hide');
+  introMessage.classList.add('hide');
+  submitButton.classList.add('hide');
+
+  highScoresList.classList.remove('hide');
+});
+
+// Questions
 const quizQuestions = [
   {
     question: "What does HTML stand for?",
-    choices: ["Hypertext Markup Language", "Hyperlink and Text Markup Language", "Home Tool Markup Language", "Happy Terra Math Language"],
-    correctAnswer: "Hypertext Markup Language"
+    choices: ["1.  Hypertext Markup Language", "2.  Hyperlink and Text Markup Language", "3.  Home Tool Markup Language", "4.  Happy Terra Math Language"],
+    correctAnswer: "1.  Hypertext Markup Language"
   },
   {
     question: "Which of the following is a JavaScript library?",
-    choices: ["Java", "JScript", "jQuery", "C+"],
-    correctAnswer: "jQuery"
+    choices: ["1.  Java", "2.  JScript", "3.  jQuery", "4.  C+"],
+    correctAnswer: "3.  jQuery"
   },
   {
     question: "What does CSS stand for?",
-    choices: ["Cascading Style Sheet", "Computer Style Sheet", "Creative Style System", "Comradery Set Stallion"],
-    correctAnswer: "Cascading Style Sheet"
+    choices: ["1.  Cascading Style Sheet", "2.  Computer Style Sheet", "3.  Creative Style System", "4.  Comradery Set Stallion"],
+    correctAnswer: "1.  Cascading Style Sheet"
   }
 ];
 
@@ -159,7 +180,7 @@ function endGame() {
   
   initialsInput.style.display = "flex";
   submitButton.style.display = "block";
-
+  questionText.classList.add("hide");
   questionContainer.style.display = "none";
   choicesList.style.display = "none";
 
@@ -205,10 +226,10 @@ function gameOver() {
   choicesList.classList.add("hide");
   submitButton.style.display = "none";
   initialsInput.style.display = "none";
-  highScoresList.classList.add("hide");
+
   console.log("Game Over!");
 
-  question.classList.add("hide");
+  questionText.classList.add("hide");
 
   timerDisplay.textContent = "0";
 
